@@ -1,0 +1,75 @@
+body {
+  background: linear-gradient(135deg, #0a1f1f 0%, #0d1b2a 50%, #1a1a2e 100%);
+  background-attachment: fixed;
+  font-family: "Inter", sans-serif;
+}
+.gradient-overlay {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 255, 200, 0.1) 0%,
+    transparent 50%
+  );
+}
+.cyber-grid {
+  background-image: linear-gradient(
+      rgba(0, 255, 200, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(0, 255, 200, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+.glow-text {
+  text-shadow: 0 0 20px rgba(0, 255, 200, 0.5);
+}
+.btn-primary {
+  background: linear-gradient(135deg, #00ffc8 0%, #00d4aa 100%);
+  box-shadow: 0 4px 15px rgba(0, 255, 200, 0.3);
+}
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(0, 255, 200, 0.5);
+  transform: translateY(-2px);
+}
+.card-hover:hover {
+  border-color: #00ffc8;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
+}
+.sidebar-bg {
+  background: rgba(10, 31, 31, 0.6);
+  backdrop-filter: blur(10px);
+}
+.sidebar {
+  transition: width 0.3s ease;
+}
+.sidebar.collapsed {
+  width: 5rem;
+}
+.sidebar-text {
+  transition: opacity 0.2s ease, width 0.2s ease;
+  white-space: nowrap;
+}
+.sidebar.collapsed .sidebar-text {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+.sidebar.collapsed nav a,
+.sidebar.collapsed .px-4 a {
+  justify-content: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.sidebar.collapsed nav a .material-icons,
+.sidebar.collapsed .px-4 a .material-icons {
+  margin-right: 0;
+}
+.sidebar-header {
+  transition: justify-content 0.3s ease;
+}
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+}
+.sidebar.collapsed .sidebar-header > div:first-child {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}

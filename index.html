@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>TruthLensHub - AI Content Detection & Authenticity Verification</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="config.js"></script>
+</head>
+<body class="text-white">
+    <div class="flex h-screen relative overflow-hidden cyber-grid">
+        <div class="gradient-overlay absolute inset-0 pointer-events-none"></div>
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar w-64 sidebar-bg flex flex-col border-r border-cyan-900/30 relative z-10">
+            <div class="flex items-center justify-between px-6 h-16 border-b border-cyan-900/30">
+                <div class="flex items-center">
+                    <span class="material-icons text-cyan-400 text-3xl mr-2">remove_red_eye</span>
+                    <h1 class="sidebar-text text-xl font-bold text-cyan-400 whitespace-nowrap">TruthLensHub</h1>
+                </div>
+                <button id="toggleSidebar" class="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center">
+                    <span class="material-icons" id="toggleIcon">menu_open</span>
+                </button>
+            </div>
+            <nav class="flex-1 px-4 py-6 space-y-2">
+                <a class="flex items-center px-4 py-3 text-white bg-cyan-500/20 border border-cyan-500/30 rounded-lg transition-all" href="#">
+                    <span class="material-icons mr-3 text-cyan-400">dashboard</span>
+                    <span class="sidebar-text">Dashboard</span>
+                </a>
+                <a class="flex items-center px-4 py-3 text-gray-400 hover:bg-cyan-500/10 hover:text-white rounded-lg transition-all" href="#">
+                    <span class="material-icons mr-3">folder</span>
+                    <span class="sidebar-text">My Content</span>
+                </a>
+                <a class="flex items-center px-4 py-3 text-gray-400 hover:bg-cyan-500/10 hover:text-white rounded-lg transition-all" href="#">
+                    <span class="material-icons mr-3">analytics</span>
+                    <span class="sidebar-text">Analytics</span>
+                </a>
+            </nav>
+            <div class="px-4 py-6 border-t border-cyan-900/30">
+                <a class="flex items-center px-4 py-3 text-gray-400 hover:bg-cyan-500/10 hover:text-white rounded-lg transition-all" href="#">
+                    <span class="material-icons mr-3">logout</span>
+                    <span class="sidebar-text">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 overflow-y-auto relative z-10">
+            <header class="mb-8">
+                <div class="inline-block px-4 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full mb-4">
+                    <span class="text-xs font-semibold text-cyan-400 uppercase">BETA</span>
+                    <span class="text-sm text-white ml-2">AI Truth Detection System</span>
+                </div>
+                <h2 class="text-5xl font-bold mb-4">
+                    Expose What's <span class="text-cyan-400 glow-text">Real</span> —<br/>
+                    Detect What's <span class="text-cyan-400 glow-text">AI</span>
+                </h2>
+                <p class="text-gray-400 text-lg max-w-3xl">
+                    Scan and verify any content — text, image, video, or website — to uncover hidden AI-generated material.
+                </p>
+            </header>
+
+            <!-- Content Cards -->
+            <div class="bg-black/30 backdrop-blur-sm p-8 rounded-2xl border border-cyan-900/30 shadow-2xl">
+                <h3 class="text-2xl font-semibold mb-6 text-white flex items-center">
+                    <span class="material-icons text-cyan-400 mr-2">security</span>
+                    Start Detection
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Image Upload -->
+                    <div class="card-hover flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-700 rounded-xl text-center hover:bg-cyan-500/5 transition-all duration-300 cursor-pointer">
+                        <span class="material-icons text-6xl text-cyan-400 mb-4">image</span>
+                        <h4 class="font-semibold text-xl mb-2 text-white">Upload Image</h4>
+                        <p class="text-sm text-gray-400 mb-6">Drag &amp; drop or click to upload</p>
+                        <button class="btn-primary text-black px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300">
+                            Browse Files
+                        </button>
+                    </div>
+
+                    <!-- Text Input -->
+                    <div class="card-hover flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-700 rounded-xl text-center hover:bg-cyan-500/5 transition-all duration-300 cursor-pointer">
+                        <span class="material-icons text-6xl text-cyan-400 mb-4">article</span>
+                        <h4 class="font-semibold text-xl mb-2 text-white">Add Text</h4>
+                        <p class="text-sm text-gray-400 mb-6">Submit an article or a block of text</p>
+                        <button class="btn-primary text-black px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300">
+                            Create Post
+                        </button>
+                    </div>
+
+                    <!-- Video Upload -->
+                    <div class="card-hover flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-700 rounded-xl text-center hover:bg-cyan-500/5 transition-all duration-300 cursor-pointer">
+                        <span class="material-icons text-6xl text-cyan-400 mb-4">video</span>
+                        <h4 class="font-semibold text-xl mb-2 text-white">Upload Video</h4>
+                        <p class="text-sm text-gray-400 mb-6">Submit a video file</p>
+                        <button class="btn-primary text-black px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300">
+                            Upload Video
+                        </button>
+                    </div>
+
+                    <!-- URL Input -->
+                    <div class="card-hover flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-700 rounded-xl text-center hover:bg-cyan-500/5 transition-all duration-300 cursor-pointer">
+                        <span class="material-icons text-6xl text-cyan-400 mb-4">link</span>
+                        <h4 class="font-semibold text-xl mb-2 text-white">Submit URL</h4>
+                        <p class="text-sm text-gray-400 mb-6">Import content from a website</p>
+                        <button class="btn-primary text-black px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300">
+                            Add Link
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-8 border-t border-cyan-900/30">
+                    <div class="flex items-center justify-center space-x-2">
+                        <span class="material-icons text-cyan-400">lock</span>
+                        <span class="text-gray-300 font-medium">Private &amp; Secure</span>
+                    </div>
+                    <div class="flex items-center justify-center space-x-2">
+                        <span class="material-icons text-cyan-400">flash_on</span>
+                        <span class="text-gray-300 font-medium">Instant Results</span>
+                    </div>
+                    <div class="flex items-center justify-center space-x-2">
+                        <span class="material-icons text-cyan-400">public</span>
+                        <span class="text-gray-300 font-medium">Works Worldwide</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            
+            if (sidebar.classList.contains('collapsed')) {
+                toggleIcon.textContent = 'menu';
+            } else {
+                toggleIcon.textContent = 'menu_open';
+            }
+        });
+    </script>
+</body>
+</html>
