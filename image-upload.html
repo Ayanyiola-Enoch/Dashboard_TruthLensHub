@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Upload Images - TruthLensHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="config.js"></script>
+  </head>
+  <body class="text-white">
+    <div class="flex h-screen relative overflow-hidden cyber-grid">
+      <div class="gradient-overlay absolute inset-0 pointer-events-none"></div>
+
+      <!-- Sidebar -->
+      <aside
+        id="sidebar"
+        class="sidebar w-72 sidebar-bg flex flex-col border-r border-cyan-900/30 relative z-10"
+      >
+        <div
+          class="sidebar-header flex items-center justify-between px-6 h-16 border-b border-cyan-900/30"
+        >
+          <div
+            class="flex items-center overflow-hidden transition-all duration-300"
+          >
+            <span class="material-icons text-cyan-400 text-3xl mr-2"
+              >remove_red_eye</span
+            >
+            <h1
+              class="sidebar-text text-xl font-bold text-cyan-400 whitespace-nowrap"
+            >
+              TruthLensHub
+            </h1>
+          </div>
+          <button
+            id="toggleSidebar"
+            class="toggle-btn text-cyan-400 hover:text-cyan-300 transition-colors flex items-center justify-center w-10 h-10 rounded-lg hover:bg-cyan-500/10"
+          >
+            <span class="material-icons" id="toggleIcon">menu_open</span>
+          </button>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2">
+          <a
+            class="flex items-center px-4 py-3 text-gray-400 hover:bg-cyan-500/10 hover:text-white rounded-lg transition-all"
+            href="index.html"
+          >
+            <span class="material-icons mr-3 text-gray-400">dashboard</span>
+            <span class="sidebar-text">Dashboard</span>
+          </a>
+          <a
+            class="flex items-center px-4 py-3 text-white bg-cyan-500/20 border border-cyan-500/30 rounded-lg transition-all"
+            href="image-upload.html"
+          >
+            <span class="material-icons mr-3 text-cyan-400">image</span>
+            <span class="sidebar-text">Image</span>
+          </a>
+          <a
+            class="flex items-center px-4 py-3 text-gray-400 hover:bg-cyan-500/10 hover:text-white rounded-lg transition-all"
+            href="text-analysis.html"
+          >
+            <span class="material-icons mr-3 text-gray-400">article</span>
+            <span class="sidebar-text">Text</span>
+          </a>
+          <a
+            class="flex items-center px-4 py-3 text-gray-400 hover:bg-cyan-500/10 hover:text-white rounded-lg transition-all"
+            href="video-upload.html"
+          >
+            <span class="material-icons mr-3 text-gray-400">videocam</span>
+            <span class="sidebar-text">Video</span>
+          </a>
+          <a
+            class="flex items-center px-4 py-3 text-gray-400 hover:bg-cyan-500/10 hover:text-white rounded-lg transition-all"
+            href="website-analysis.html"
+          >
+            <span class="material-icons mr-3 text-gray-400">link</span>
+            <span class="sidebar-text">Website Link</span>
+          </a>
+        </nav>
+        <div class="px-4 py-6 border-t border-cyan-900/30">
+          <a
+            class="flex items-center px-4 py-3 text-gray-400 hover:bg-cyan-500/10 hover:text-white rounded-lg transition-all"
+            href="#"
+          >
+            <span class="material-icons mr-3 text-gray-400">logout</span>
+            <span class="sidebar-text">Logout</span>
+          </a>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-8 overflow-y-auto relative z-10">
+        <!-- Header -->
+        <div class="mb-8">
+          <div class="flex items-center mb-4">
+            <a
+              href="index.html"
+              class="text-cyan-400 hover:text-cyan-300 flex items-center mr-4"
+            >
+              <span class="material-icons mr-1">arrow_back</span>
+              <span>Back to Dashboard</span>
+            </a>
+          </div>
+          <h2 class="text-4xl font-bold mb-2">Upload Images</h2>
+          <p class="text-gray-400">
+            Drag and drop your images here or browse from your computer.
+            Supported formats: JPG, PNG, GIF.
+          </p>
+        </div>
+
+        <!-- Upload Section -->
+        <div
+          class="bg-black/30 backdrop-blur-sm p-8 rounded-2xl border border-cyan-900/30 shadow-2xl mb-8"
+        >
+          <div
+            id="dropZone"
+            class="border-2 border-dashed border-cyan-500/30 rounded-xl p-12 text-center hover:border-cyan-500/60 hover:bg-cyan-500/5 transition-all duration-300 cursor-pointer"
+          >
+            <div class="flex flex-col items-center">
+              <span
+                class="material-icons text-cyan-400 mb-4"
+                style="font-size: 80px"
+                >cloud_upload</span
+              >
+              <h3 class="text-xl font-semibold text-white mb-2">
+                Drag and drop images here
+              </h3>
+              <p class="text-gray-400 mb-4">or</p>
+              <button
+                id="browseBtn"
+                class="btn-primary text-black px-8 py-3 rounded-lg font-semibold transition-all duration-300"
+              >
+                Browse Files
+              </button>
+              <input
+                type="file"
+                id="fileInput"
+                class="hidden"
+                accept="image/jpeg,image/png,image/gif"
+                multiple
+              />
+              <p class="text-sm text-gray-500 mt-4">
+                Maximum file size: 10MB per image
+              </p>
+            </div>
+          </div>
+
+          <!-- Preview Area -->
+          <div id="previewArea" class="mt-6 hidden">
+            <h3 class="text-lg font-semibold text-white mb-4">
+              Selected Images
+            </h3>
+            <div
+              id="imageGrid"
+              class="grid grid-cols-2 md:grid-cols-4 gap-4"
+            ></div>
+          </div>
+
+          <!-- Upload Button -->
+          <div id="uploadSection" class="mt-6 hidden">
+            <button
+              id="uploadBtn"
+              class="btn-primary text-black px-8 py-3 rounded-lg font-semibold transition-all duration-300 w-full"
+            >
+              <span class="flex items-center justify-center">
+                <span class="material-icons mr-2">check_circle</span>
+                Upload and Detect AI
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- AI Detection Results -->
+        <div
+          class="bg-black/30 backdrop-blur-sm p-8 rounded-2xl border border-cyan-900/30 shadow-2xl"
+        >
+          <h3 class="text-2xl font-semibold mb-6 text-white flex items-center">
+            <span class="material-icons text-cyan-400 mr-2">analytics</span>
+            AI Detection Results
+          </h3>
+          <div
+            id="resultsArea"
+            class="flex flex-col items-center justify-center py-12"
+          >
+            <span
+              class="material-icons text-gray-600 mb-4"
+              style="font-size: 80px"
+              >image_search</span
+            >
+            <p class="text-gray-400 text-center">
+              No images uploaded yet. Upload an image to see AI detection
+              results.
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // Sidebar Toggle
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.getElementById("toggleSidebar");
+      const toggleIcon = document.getElementById("toggleIcon");
+
+      toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+        toggleIcon.textContent = sidebar.classList.contains("collapsed")
+          ? "menu"
+          : "menu_open";
+      });
+
+      // File Upload Functionality
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const browseBtn = document.getElementById("browseBtn");
+      const previewArea = document.getElementById("previewArea");
+      const imageGrid = document.getElementById("imageGrid");
+      const uploadSection = document.getElementById("uploadSection");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const resultsArea = document.getElementById("resultsArea");
+
+      let selectedFiles = [];
+
+      // Browse button click
+      browseBtn.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      // File input change
+      fileInput.addEventListener("change", (e) => {
+        handleFiles(e.target.files);
+      });
+
+      // Drag and drop
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("border-cyan-500");
+      });
+
+      dropZone.addEventListener("dragleave", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("border-cyan-500");
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("border-cyan-500");
+        handleFiles(e.dataTransfer.files);
+      });
+
+      function handleFiles(files) {
+        selectedFiles = Array.from(files).filter((file) =>
+          file.type.startsWith("image/")
+        );
+
+        if (selectedFiles.length > 0) {
+          displayPreviews();
+          previewArea.classList.remove("hidden");
+          uploadSection.classList.remove("hidden");
+        }
+      }
+
+      function displayPreviews() {
+        imageGrid.innerHTML = "";
+        selectedFiles.forEach((file, index) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const div = document.createElement("div");
+            div.className = "relative group";
+            div.innerHTML = `
+                        <img src="${e.target.result}" class="w-full h-32 object-cover rounded-lg border border-cyan-500/30" alt="Preview">
+                        <button onclick="removeImage(${index})" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span class="material-icons text-sm">close</span>
+                        </button>
+                        <p class="text-xs text-gray-400 mt-1 truncate">${file.name}</p>
+                    `;
+            imageGrid.appendChild(div);
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      window.removeImage = function (index) {
+        selectedFiles.splice(index, 1);
+        if (selectedFiles.length === 0) {
+          previewArea.classList.add("hidden");
+          uploadSection.classList.add("hidden");
+        } else {
+          displayPreviews();
+        }
+      };
+
+      // Upload and analyze
+      uploadBtn.addEventListener("click", () => {
+        resultsArea.innerHTML = `
+                <div class="flex flex-col items-center">
+                    <div class="animate-spin rounded-full h-16 w-16 border-4 border-cyan-400 border-t-transparent mb-4"></div>
+                    <p class="text-cyan-400 text-lg">Analyzing images...</p>
+                </div>
+            `;
+
+        // Simulate analysis (replace with actual API call)
+        setTimeout(() => {
+          resultsArea.innerHTML = `
+                    <div class="w-full space-y-4">
+                        ${selectedFiles
+                          .map(
+                            (file, i) => `
+                            <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="material-icons text-cyan-400 mr-3">check_circle</span>
+                                    <div>
+                                        <p class="text-white font-semibold">${
+                                          file.name
+                                        }</p>
+                                        <p class="text-sm text-gray-400">AI Detection: ${
+                                          Math.random() > 0.5
+                                            ? "No AI detected"
+                                            : "AI-generated detected"
+                                        }</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-cyan-400 font-bold">${(
+                                      Math.random() * 100
+                                    ).toFixed(1)}%</p>
+                                    <p class="text-xs text-gray-400">Confidence</p>
+                                </div>
+                            </div>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                `;
+        }, 2000);
+      });
+    </script>
+  </body>
+</html>
