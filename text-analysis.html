@@ -230,16 +230,14 @@
         `;
 
         try {
-          const response = await fetch(
-            "https://truthlenshub-backend.onrender.com/api/text/detect",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ text: text }),
-            }
-          );
+          // Call the API using global endpoint
+          const response = await fetch(API_ENDPOINTS.TEXT_DETECT, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text: text }),
+          });
 
           if (!response.ok) {
             throw new Error("API request failed");
@@ -375,7 +373,7 @@
               <p class="text-gray-400 text-center">
                 Unable to analyze the text. Please try again later.
               </p>
-         
+              <p class="text-sm text-gray-500 mt-2">${error.message}</p>
             </div>
           `;
         }

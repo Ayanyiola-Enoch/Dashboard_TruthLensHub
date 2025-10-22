@@ -278,57 +278,133 @@
         uploadSection.classList.add("hidden");
       });
 
-      uploadBtn.addEventListener("click", () => {
+      uploadBtn.addEventListener("click", async () => {
         resultsArea.innerHTML = `
-                <div class="flex flex-col items-center">
-                    <div class="animate-spin rounded-full h-16 w-16 border-4 border-cyan-400 border-t-transparent mb-4"></div>
-                    <p class="text-cyan-400 text-lg">Analyzing video...</p>
-                </div>
-            `;
+          <div class="flex flex-col items-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-4 border-cyan-400 border-t-transparent mb-4"></div>
+            <p class="text-cyan-400 text-lg">Analyzing video...</p>
+            <p class="text-sm text-gray-400 mt-2">This may take a few moments...</p>
+          </div>
+        `;
 
-        setTimeout(() => {
-          const isAI = Math.random() > 0.5;
-          const confidence = (Math.random() * 100).toFixed(1);
-          resultsArea.innerHTML = `
-                    <div class="w-full">
-                        <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-6">
-                            <div class="flex items-start justify-between mb-4">
-                                <div>
-                                    <h4 class="text-xl font-semibold text-white mb-2">${
-                                      selectedFile.name
-                                    }</h4>
-                                    <p class="text-gray-400">Analysis Complete</p>
-                                </div>
-                                <span class="material-icons text-cyan-400 text-4xl">${
-                                  isAI ? "warning" : "verified"
-                                }</span>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4 mb-4">
-                                <div class="bg-black/30 rounded-lg p-4">
-                                    <p class="text-sm text-gray-400 mb-1">Detection Status</p>
-                                    <p class="text-lg font-semibold ${
-                                      isAI
-                                        ? "text-yellow-400"
-                                        : "text-green-400"
-                                    }">${
-            isAI ? "AI-Generated Detected" : "No AI Detected"
-          }</p>
-                                </div>
-                                <div class="bg-black/30 rounded-lg p-4">
-                                    <p class="text-sm text-gray-400 mb-1">Confidence Level</p>
-                                    <p class="text-lg font-semibold text-cyan-400">${confidence}%</p>
-                                </div>
-                            </div>
-                            <div class="bg-black/30 rounded-lg p-4">
-                                <p class="text-sm text-gray-400 mb-2">Frame Analysis</p>
-                                <div class="w-full bg-gray-700 rounded-full h-2">
-                                    <div class="bg-cyan-400 h-2 rounded-full" style="width: ${confidence}%"></div>
-                                </div>
-                            </div>
-                        </div>
+        try {
+          const formData = new FormData();
+          formData.append("video", selectedFile);
+
+          const response = await fetch(API_ENDPOINTS.VIDEO_DETECT, {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error("API request failed");
+          }
+
+          const result = await response.json();
+
+          if (result.status === "success") {
+            const data = result.data;
+            const isAI = data.verdict === "AI-Generated";
+            const confidence = data.confidence;
+
+            resultsArea.innerHTML = `
+              <div class="w-full">
+                <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-6">
+                  <div class="flex items-start justify-between mb-6">
+                    <div>
+                      <h4 class="text-xl font-semibold text-white mb-2">${
+                        selectedFile.name
+                      }</h4>
+                      <p class="text-lg font-semibold ${
+                        isAI ? "text-yellow-400" : "text-green-400"
+                      } mb-2">
+                        ${data.verdict}
+                      </p>
+                      <p class="text-gray-400">Analysis Complete</p>
                     </div>
-                `;
-        }, 3000);
+                    <span class="material-icons ${
+                      isAI ? "text-yellow-400" : "text-green-400"
+                    } text-5xl">
+                      ${isAI ? "warning" : "verified"}
+                    </span>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-black/30 rounded-lg p-4">
+                      <p class="text-sm text-gray-400 mb-1">Detection Status</p>
+                      <p class="text-lg font-semibold ${
+                        isAI ? "text-yellow-400" : "text-green-400"
+                      }">
+                        ${isAI ? "AI-Generated Detected" : "No AI Detected"}
+                      </p>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-4">
+                      <p class="text-sm text-gray-400 mb-1">Confidence Level</p>
+                      <p class="text-lg font-semibold text-cyan-400">${confidence}%</p>
+                    </div>
+                  </div>
+
+                  ${
+                    data.explanation
+                      ? `
+                    <div class="bg-black/30 rounded-lg p-4 mb-4">
+                      <p class="text-sm text-gray-400 mb-2">Explanation</p>
+                      <p class="text-white">${data.explanation}</p>
+                    </div>
+                  `
+                      : ""
+                  }
+
+                  ${
+                    data.indicators && data.indicators.length > 0
+                      ? `
+                    <div class="bg-black/30 rounded-lg p-4 mb-4">
+                      <p class="text-sm text-gray-400 mb-3">Detection Indicators</p>
+                      <ul class="space-y-2">
+                        ${data.indicators
+                          .map(
+                            (indicator) => `
+                          <li class="flex items-start text-white">
+                            <span class="material-icons text-cyan-400 text-sm mr-2 mt-0.5">check_circle</span>
+                            <span>${indicator}</span>
+                          </li>
+                        `
+                          )
+                          .join("")}
+                      </ul>
+                    </div>
+                  `
+                      : ""
+                  }
+
+                  <div class="bg-black/30 rounded-lg p-4">
+                    <p class="text-sm text-gray-400 mb-2">Frame Analysis</p>
+                    <div class="w-full bg-gray-700 rounded-full h-3">
+                      <div class="h-3 rounded-full transition-all duration-1000 ${
+                        isAI ? "bg-yellow-400" : "bg-green-400"
+                      }" 
+                           style="width: ${confidence}%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+          } else {
+            throw new Error("Invalid response format");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          resultsArea.innerHTML = `
+            <div class="flex flex-col items-center">
+              <span class="material-icons text-red-500 mb-4" style="font-size: 80px">error</span>
+              <h4 class="text-xl font-bold text-red-500 mb-2">Analysis Failed</h4>
+              <p class="text-gray-400 text-center">
+                Unable to analyze the video. Please try again later.
+              </p>
+              <p class="text-sm text-gray-500 mt-2">${error.message}</p>
+            </div>
+          `;
+        }
       });
     </script>
   </body>

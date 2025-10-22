@@ -210,7 +210,7 @@
       const analyzeBtn = document.getElementById("analyzeBtn");
       const resultsArea = document.getElementById("resultsArea");
 
-      analyzeBtn.addEventListener("click", () => {
+      analyzeBtn.addEventListener("click", async () => {
         const url = urlInput.value.trim();
 
         if (!url) {
@@ -224,125 +224,222 @@
         }
 
         resultsArea.innerHTML = `
-                <div class="flex flex-col items-center">
-                    <div class="animate-spin rounded-full h-16 w-16 border-4 border-cyan-400 border-t-transparent mb-4"></div>
-                    <p class="text-cyan-400 text-lg">Scanning website...</p>
-                    <p class="text-gray-500 text-sm mt-2">Analyzing content, images, and structure</p>
-                </div>
-            `;
+          <div class="flex flex-col items-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-4 border-cyan-400 border-t-transparent mb-4"></div>
+            <p class="text-cyan-400 text-lg">Scanning website...</p>
+            <p class="text-gray-500 text-sm mt-2">Analyzing content, images, and structure</p>
+          </div>
+        `;
 
-        setTimeout(() => {
-          const aiContentPercent = (Math.random() * 100).toFixed(1);
-          const pagesScanned = Math.floor(Math.random() * 50) + 10;
-          const imagesScanned = Math.floor(Math.random() * 100) + 20;
-          const hasAI = parseFloat(aiContentPercent) > 30;
+        try {
+          const response = await fetch(API_ENDPOINTS.WEBSITE_DETECT, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url: url }),
+          });
 
-          resultsArea.innerHTML = `
-                    <div class="w-full space-y-6">
-                        <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-6">
-                            <div class="flex items-start justify-between mb-6">
-                                <div class="flex-1">
-                                    <div class="flex items-center mb-2">
-                                        <span class="material-icons text-cyan-400 mr-2">language</span>
-                                        <h4 class="text-xl font-bold text-white">${url}</h4>
-                                    </div>
-                                    <p class="text-gray-400">Scan completed at ${new Date().toLocaleTimeString()}</p>
-                                </div>
-                                <span class="material-icons text-5xl ${
-                                  hasAI ? "text-yellow-400" : "text-green-400"
-                                }">${hasAI ? "warning" : "verified"}</span>
-                            </div>
+          if (!response.ok) {
+            throw new Error("API request failed");
+          }
 
-                            <div class="grid grid-cols-3 gap-4 mb-6">
-                                <div class="bg-black/30 rounded-lg p-4">
-                                    <p class="text-sm text-gray-400 mb-1">AI Content</p>
-                                    <p class="text-2xl font-bold ${
-                                      hasAI
-                                        ? "text-yellow-400"
-                                        : "text-green-400"
-                                    }">${aiContentPercent}%</p>
-                                </div>
-                                <div class="bg-black/30 rounded-lg p-4">
-                                    <p class="text-sm text-gray-400 mb-1">Pages Scanned</p>
-                                    <p class="text-2xl font-bold text-cyan-400">${pagesScanned}</p>
-                                </div>
-                                <div class="bg-black/30 rounded-lg p-4">
-                                    <p class="text-sm text-gray-400 mb-1">Images Analyzed</p>
-                                    <p class="text-2xl font-bold text-cyan-400">${imagesScanned}</p>
-                                </div>
-                            </div>
+          const result = await response.json();
 
-                            <div class="space-y-4">
-                                <div class="bg-black/30 rounded-lg p-4">
-                                    <div class="flex justify-between items-center mb-3">
-                                        <span class="text-sm font-semibold text-gray-300">Content Analysis</span>
-                                        <span class="text-cyan-400 font-bold">${aiContentPercent}%</span>
-                                    </div>
-                                    <div class="w-full bg-gray-700 rounded-full h-3">
-                                        <div class="h-3 rounded-full transition-all duration-1000 ${
-                                          hasAI
-                                            ? "bg-yellow-400"
-                                            : "bg-green-400"
-                                        }" style="width: ${aiContentPercent}%"></div>
-                                    </div>
-                                </div>
+          if (result.status === "success") {
+            const data = result.data;
+            const isAI = data.verdict === "AI-Generated";
+            const confidence = data.confidence;
+            const websiteInfo = data.websiteInfo || {};
 
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="bg-black/30 rounded-lg p-4">
-                                        <div class="flex items-center mb-2">
-                                            <span class="material-icons text-cyan-400 mr-2 text-sm">article</span>
-                                            <span class="text-sm text-gray-400">Text Content</span>
-                                        </div>
-                                        <p class="text-lg font-semibold text-white">${(
-                                          Math.random() * 100
-                                        ).toFixed(1)}% AI</p>
-                                    </div>
-                                    <div class="bg-black/30 rounded-lg p-4">
-                                        <div class="flex items-center mb-2">
-                                            <span class="material-icons text-cyan-400 mr-2 text-sm">image</span>
-                                            <span class="text-sm text-gray-400">Images</span>
-                                        </div>
-                                        <p class="text-lg font-semibold text-white">${(
-                                          Math.random() * 100
-                                        ).toFixed(1)}% AI</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-black/30 border border-cyan-500/20 rounded-lg p-6">
-                            <h4 class="text-lg font-semibold text-white mb-4 flex items-center">
-                                <span class="material-icons text-cyan-400 mr-2">info</span>
-                                Detection Summary
-                            </h4>
-                            <ul class="space-y-2 text-gray-300">
-                                <li class="flex items-start">
-                                    <span class="material-icons text-cyan-400 mr-2 text-sm mt-0.5">check_circle</span>
-                                    <span>Analyzed ${pagesScanned} pages across the website</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="material-icons text-cyan-400 mr-2 text-sm mt-0.5">check_circle</span>
-                                    <span>Scanned ${imagesScanned} images for AI generation</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="material-icons ${
-                                      hasAI
-                                        ? "text-yellow-400"
-                                        : "text-green-400"
-                                    } mr-2 text-sm mt-0.5">${
-            hasAI ? "warning" : "verified"
-          }</span>
-                                    <span>${
-                                      hasAI
-                                        ? "Potential AI-generated content detected"
-                                        : "No significant AI content detected"
-                                    }</span>
-                                </li>
-                            </ul>
-                        </div>
+            resultsArea.innerHTML = `
+              <div class="w-full space-y-6">
+                <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-6">
+                  <div class="flex items-start justify-between mb-6">
+                    <div class="flex-1">
+                      <div class="flex items-center mb-2">
+                        <span class="material-icons text-cyan-400 mr-2">language</span>
+                        <h4 class="text-xl font-bold text-white">${
+                          websiteInfo.url || url
+                        }</h4>
+                      </div>
+                      ${
+                        websiteInfo.title
+                          ? `
+                        <p class="text-gray-300 mb-2">${websiteInfo.title}</p>
+                      `
+                          : ""
+                      }
+                      <p class="text-sm ${
+                        isAI ? "text-yellow-400" : "text-green-400"
+                      } font-semibold mb-2">
+                        ${data.verdict}
+                      </p>
+                      <p class="text-gray-400 text-sm">Scan completed at ${new Date().toLocaleTimeString()}</p>
                     </div>
-                `;
-        }, 3000);
+                    <span class="material-icons text-5xl ${
+                      isAI ? "text-yellow-400" : "text-green-400"
+                    }">
+                      ${isAI ? "warning" : "verified"}
+                    </span>
+                  </div>
+
+                  <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="bg-black/30 rounded-lg p-4">
+                      <p class="text-sm text-gray-400 mb-1">AI Content</p>
+                      <p class="text-2xl font-bold ${
+                        isAI ? "text-yellow-400" : "text-green-400"
+                      }">
+                        ${isAI ? confidence : (100 - confidence).toFixed(1)}%
+                      </p>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-4">
+                      <p class="text-sm text-gray-400 mb-1">Confidence</p>
+                      <p class="text-2xl font-bold text-cyan-400">${confidence}%</p>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-4">
+                      <p class="text-sm text-gray-400 mb-1">Word Count</p>
+                      <p class="text-2xl font-bold text-cyan-400">${
+                        websiteInfo.wordCount || "N/A"
+                      }</p>
+                    </div>
+                  </div>
+
+                  ${
+                    websiteInfo.metaDescription
+                      ? `
+                    <div class="bg-black/30 rounded-lg p-4 mb-4">
+                      <p class="text-sm text-gray-400 mb-2">Meta Description</p>
+                      <p class="text-white text-sm">${websiteInfo.metaDescription}</p>
+                    </div>
+                  `
+                      : ""
+                  }
+
+                  ${
+                    data.explanation
+                      ? `
+                    <div class="bg-black/30 rounded-lg p-4 mb-4">
+                      <p class="text-sm text-gray-400 mb-2">Analysis Explanation</p>
+                      <p class="text-white">${data.explanation}</p>
+                    </div>
+                  `
+                      : ""
+                  }
+
+                  ${
+                    data.indicators && data.indicators.length > 0
+                      ? `
+                    <div class="bg-black/30 rounded-lg p-4 mb-4">
+                      <p class="text-sm text-gray-400 mb-3">Detection Indicators</p>
+                      <ul class="space-y-2">
+                        ${data.indicators
+                          .map(
+                            (indicator) => `
+                          <li class="flex items-start text-white">
+                            <span class="material-icons text-cyan-400 text-sm mr-2 mt-0.5">check_circle</span>
+                            <span>${indicator}</span>
+                          </li>
+                        `
+                          )
+                          .join("")}
+                      </ul>
+                    </div>
+                  `
+                      : ""
+                  }
+
+                  <div class="space-y-3">
+                    <div class="bg-black/30 rounded-lg p-4">
+                      <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-semibold text-gray-300">Content Analysis</span>
+                        <span class="text-cyan-400 font-bold">${confidence}%</span>
+                      </div>
+                      <div class="w-full bg-gray-700 rounded-full h-3">
+                        <div class="h-3 rounded-full transition-all duration-1000 ${
+                          isAI ? "bg-yellow-400" : "bg-green-400"
+                        }" 
+                             style="width: ${confidence}%"></div>
+                      </div>
+                    </div>
+
+                    ${
+                      websiteInfo.headingCount
+                        ? `
+                      <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-black/30 rounded-lg p-4">
+                          <div class="flex items-center mb-2">
+                            <span class="material-icons text-cyan-400 mr-2 text-sm">title</span>
+                            <span class="text-sm text-gray-400">H1 Headings</span>
+                          </div>
+                          <p class="text-lg font-semibold text-white">${
+                            websiteInfo.headingCount.h1 || 0
+                          }</p>
+                        </div>
+                        <div class="bg-black/30 rounded-lg p-4">
+                          <div class="flex items-center mb-2">
+                            <span class="material-icons text-cyan-400 mr-2 text-sm">subject</span>
+                            <span class="text-sm text-gray-400">H2 Headings</span>
+                          </div>
+                          <p class="text-lg font-semibold text-white">${
+                            websiteInfo.headingCount.h2 || 0
+                          }</p>
+                        </div>
+                      </div>
+                    `
+                        : ""
+                    }
+                  </div>
+                </div>
+
+                <div class="bg-black/30 border border-cyan-500/20 rounded-lg p-6">
+                  <h4 class="text-lg font-semibold text-white mb-4 flex items-center">
+                    <span class="material-icons text-cyan-400 mr-2">info</span>
+                    Detection Summary
+                  </h4>
+                  <ul class="space-y-2 text-gray-300">
+                    <li class="flex items-start">
+                      <span class="material-icons text-cyan-400 mr-2 text-sm mt-0.5">check_circle</span>
+                      <span>Analyzed website content and structure</span>
+                    </li>
+                    <li class="flex items-start">
+                      <span class="material-icons text-cyan-400 mr-2 text-sm mt-0.5">check_circle</span>
+                      <span>Scanned ${
+                        websiteInfo.wordCount || "multiple"
+                      } words for AI patterns</span>
+                    </li>
+                    <li class="flex items-start">
+                      <span class="material-icons ${
+                        isAI ? "text-yellow-400" : "text-green-400"
+                      } mr-2 text-sm mt-0.5">
+                        ${isAI ? "warning" : "verified"}
+                      </span>
+                      <span>${
+                        isAI
+                          ? "Potential AI-generated content detected"
+                          : "No significant AI content detected"
+                      }</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            `;
+          } else {
+            throw new Error("Invalid response format");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          resultsArea.innerHTML = `
+            <div class="flex flex-col items-center">
+              <span class="material-icons text-red-500 mb-4" style="font-size: 80px">error</span>
+              <h4 class="text-xl font-bold text-red-500 mb-2">Analysis Failed</h4>
+              <p class="text-gray-400 text-center">
+                Unable to analyze the website. Please check the URL and try again.
+              </p>
+              <p class="text-sm text-gray-500 mt-2">${error.message}</p>
+            </div>
+          `;
+        }
       });
     </script>
   </body>

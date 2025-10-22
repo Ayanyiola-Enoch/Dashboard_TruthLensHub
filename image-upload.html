@@ -298,48 +298,128 @@
       };
 
       // Upload and analyze
-      uploadBtn.addEventListener("click", () => {
+      uploadBtn.addEventListener("click", async () => {
         resultsArea.innerHTML = `
-                <div class="flex flex-col items-center">
-                    <div class="animate-spin rounded-full h-16 w-16 border-4 border-cyan-400 border-t-transparent mb-4"></div>
-                    <p class="text-cyan-400 text-lg">Analyzing images...</p>
-                </div>
-            `;
+          <div class="flex flex-col items-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-4 border-cyan-400 border-t-transparent mb-4"></div>
+            <p class="text-cyan-400 text-lg">Analyzing images...</p>
+          </div>
+        `;
 
-        // Simulate analysis (replace with actual API call)
-        setTimeout(() => {
-          resultsArea.innerHTML = `
-                    <div class="w-full space-y-4">
-                        ${selectedFiles
-                          .map(
-                            (file, i) => `
-                            <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4 flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="material-icons text-cyan-400 mr-3">check_circle</span>
-                                    <div>
-                                        <p class="text-white font-semibold">${
-                                          file.name
-                                        }</p>
-                                        <p class="text-sm text-gray-400">AI Detection: ${
-                                          Math.random() > 0.5
-                                            ? "No AI detected"
-                                            : "AI-generated detected"
-                                        }</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-cyan-400 font-bold">${(
-                                      Math.random() * 100
-                                    ).toFixed(1)}%</p>
-                                    <p class="text-xs text-gray-400">Confidence</p>
-                                </div>
-                            </div>
-                        `
-                          )
-                          .join("")}
+        try {
+          const formData = new FormData();
+          selectedFiles.forEach((file) => {
+            formData.append("images", file);
+          });
+
+          const response = await fetch(API_ENDPOINTS.IMAGE_DETECT, {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error("API request failed");
+          }
+
+          const result = await response.json();
+
+          if (result.status === "success") {
+            const results = Array.isArray(result.data)
+              ? result.data
+              : [result.data];
+
+            resultsArea.innerHTML = `
+              <div class="w-full space-y-4">
+                ${results
+                  .map((data, i) => {
+                    const isAI = data.verdict === "AI-Generated";
+                    const confidence = data.confidence;
+
+                    return `
+                    <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-6">
+                      <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                          <div class="flex items-center mb-2">
+                            <span class="material-icons ${
+                              isAI ? "text-yellow-400" : "text-green-400"
+                            } mr-2">
+                              ${isAI ? "warning" : "check_circle"}
+                            </span>
+                            <h4 class="text-lg font-semibold text-white">${
+                              selectedFiles[i]?.name || `Image ${i + 1}`
+                            }</h4>
+                          </div>
+                          <p class="text-sm ${
+                            isAI ? "text-yellow-400" : "text-green-400"
+                          } font-semibold mb-2">
+                            ${data.verdict}
+                          </p>
+                          ${
+                            data.explanation
+                              ? `
+                            <p class="text-sm text-gray-400">${data.explanation}</p>
+                          `
+                              : ""
+                          }
+                        </div>
+                        <div class="text-right ml-4">
+                          <p class="text-3xl font-bold text-cyan-400">${confidence}%</p>
+                          <p class="text-xs text-gray-400">Confidence</p>
+                        </div>
+                      </div>
+
+                      ${
+                        data.indicators && data.indicators.length > 0
+                          ? `
+                        <div class="bg-black/30 rounded-lg p-4 mt-4">
+                          <p class="text-sm text-gray-400 mb-3">Detection Indicators</p>
+                          <ul class="space-y-2">
+                            ${data.indicators
+                              .map(
+                                (indicator) => `
+                              <li class="flex items-start text-sm text-white">
+                                <span class="material-icons text-cyan-400 text-sm mr-2 mt-0.5">fiber_manual_record</span>
+                                <span>${indicator}</span>
+                              </li>
+                            `
+                              )
+                              .join("")}
+                          </ul>
+                        </div>
+                      `
+                          : ""
+                      }
+
+                      <div class="mt-4">
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                          <div class="h-2 rounded-full transition-all duration-1000 ${
+                            isAI ? "bg-yellow-400" : "bg-green-400"
+                          }" 
+                               style="width: ${confidence}%"></div>
+                        </div>
+                      </div>
                     </div>
-                `;
-        }, 2000);
+                  `;
+                  })
+                  .join("")}
+              </div>
+            `;
+          } else {
+            throw new Error("Invalid response format");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          resultsArea.innerHTML = `
+            <div class="flex flex-col items-center">
+              <span class="material-icons text-red-500 mb-4" style="font-size: 80px">error</span>
+              <h4 class="text-xl font-bold text-red-500 mb-2">Analysis Failed</h4>
+              <p class="text-gray-400 text-center">
+                Unable to analyze the images. Please try again later.
+              </p>
+              <p class="text-sm text-gray-500 mt-2">${error.message}</p>
+            </div>
+          `;
+        }
       });
     </script>
   </body>

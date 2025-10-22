@@ -28,3 +28,14 @@ tailwind.config = {
     },
   },
 };
+
+// Global API Configuration
+const BASE_URL = "https://truthlenshub-backend.onrender.com";
+
+// API Endpoints
+const API_ENDPOINTS = {
+  TEXT_DETECT: `${BASE_URL}/api/text/detect`,
+  IMAGE_DETECT: `${BASE_URL}/api/image/detect`,
+  VIDEO_DETECT: `${BASE_URL}/api/video/detect`,
+  WEBSITE_DETECT: `${BASE_URL}/api/website/detect`,
+};
