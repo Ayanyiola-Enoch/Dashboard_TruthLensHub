@@ -230,9 +230,9 @@
             <a
               href="image-upload.html"
               class="quick-action-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-cyan-900/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 group"
-              data-aos="zoom-in"
-              data-aos-duration="500"
-              data-aos-delay="100"
+              data-aos="fade-up"
+              data-aos-duration="600"
+              data-aos-delay="0"
             >
               <span
                 class="material-icons text-cyan-400 text-4xl md:text-5xl mb-3 md:mb-4 group-hover:scale-110 transition-transform"
@@ -249,9 +249,9 @@
             <a
               href="text-analysis.html"
               class="quick-action-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-cyan-900/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 group"
-              data-aos="zoom-in"
-              data-aos-duration="500"
-              data-aos-delay="200"
+              data-aos="fade-up"
+              data-aos-duration="600"
+              data-aos-delay="100"
             >
               <span
                 class="material-icons text-cyan-400 text-4xl md:text-5xl mb-3 md:mb-4 group-hover:scale-110 transition-transform"
@@ -268,9 +268,9 @@
             <a
               href="video-upload.html"
               class="quick-action-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-cyan-900/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 group"
-              data-aos="zoom-in"
-              data-aos-duration="500"
-              data-aos-delay="300"
+              data-aos="fade-up"
+              data-aos-duration="600"
+              data-aos-delay="200"
             >
               <span
                 class="material-icons text-cyan-400 text-4xl md:text-5xl mb-3 md:mb-4 group-hover:scale-110 transition-transform"
@@ -287,15 +287,14 @@
             <a
               href="website-analysis.html"
               class="quick-action-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-cyan-900/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 group"
-              data-aos="zoom-in"
-              data-aos-duration="500"
-              data-aos-delay="400"
+              data-aos="fade-up"
+              data-aos-duration="600"
+              data-aos-delay="300"
             >
               <span
                 class="material-icons text-cyan-400 text-4xl md:text-5xl mb-3 md:mb-4 group-hover:scale-110 transition-transform"
                 >link</span
               >
-
               <h4 class="text-base md:text-lg font-semibold text-white mb-2">
                 Analyze Website
               </h4>
@@ -307,12 +306,13 @@
         </div>
       </main>
     </div>
+
     <!-- AOS Animation Script -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
       AOS.init({
-        once: true,
-        mirror: false,
+        once: true, // Animation happens only once
+        mirror: false, // Elements don't animate out while scrolling past them
         anchorPlacement: "top-bottom",
         easing: "ease-in-out",
       });
