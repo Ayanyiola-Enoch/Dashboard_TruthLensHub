@@ -39,3 +39,6 @@ const API_ENDPOINTS = {
   VIDEO_DETECT: `${BASE_URL}/api/video/detect`,
   WEBSITE_DETECT: `${BASE_URL}/api/website/detect`,
 };
+
+// Global abort controller for canceling requests
+let currentAbortController = null;
