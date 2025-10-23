@@ -223,8 +223,33 @@ body {
   background: rgba(6, 182, 212, 0.7);
 }
 
+/* Ensure content doesn't overflow */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Back to Dashboard link - Default: visible on desktop, hidden on mobile */
+.back-to-dashboard {
+  display: flex;
+}
+
 /* Mobile Responsive Styles - Only apply on mobile */
 @media (max-width: 768px) {
+  /* Hide back to dashboard on mobile */
+  .back-to-dashboard {
+    display: none !important;
+  }
+
   /* Hide sidebar on mobile */
   .sidebar {
     display: none !important;
@@ -369,6 +394,11 @@ body {
 
 /* Tablet breakpoint - Keep sidebar visible */
 @media (min-width: 769px) and (max-width: 1024px) {
+  /* Keep back to dashboard visible on tablet */
+  .back-to-dashboard {
+    display: flex !important;
+  }
+
   .sidebar {
     width: 16rem;
     display: flex !important;
@@ -398,6 +428,11 @@ body {
 
 /* Desktop - Sidebar always visible */
 @media (min-width: 1025px) {
+  /* Keep back to dashboard visible on desktop */
+  .back-to-dashboard {
+    display: flex !important;
+  }
+
   .sidebar {
     display: flex !important;
   }
@@ -413,19 +448,4 @@ body {
   main {
     padding: 2rem;
   }
-}
-
-/* Ensure content doesn't overflow */
-* {
-  box-sizing: border-box;
-}
-
-body {
-  overflow-x: hidden;
-}
-
-/* Responsive images */
-img {
-  max-width: 100%;
-  height: auto;
 }
