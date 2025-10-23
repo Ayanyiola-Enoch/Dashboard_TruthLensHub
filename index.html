@@ -13,6 +13,8 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <script src="config.js"></script>
   </head>
@@ -24,6 +26,8 @@
       <aside
         id="sidebar"
         class="sidebar bg-black/40 backdrop-blur-md w-64 flex-shrink-0 border-r border-cyan-900/50 relative z-20 hidden md:flex"
+        data-aos="fade-right"
+        data-aos-duration="800"
       >
         <div class="flex flex-col h-full w-full p-4">
           <!-- Logo/Header -->
@@ -103,7 +107,7 @@
       <!-- Main Content -->
       <main class="flex-1 p-4 md:p-8 overflow-y-auto relative z-10">
         <!-- Header -->
-        <div class="mb-6 md:mb-8">
+        <div class="mb-6 md:mb-8" data-aos="fade-down" data-aos-duration="600">
           <h2 class="text-3xl md:text-4xl font-bold mb-2">
             TruthLens Dashboard
           </h2>
@@ -118,6 +122,9 @@
         >
           <div
             class="stats-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-2xl border border-cyan-900/30 hover:border-cyan-500/50 transition-all duration-300"
+            data-aos="fade-up"
+            data-aos-duration="600"
+            data-aos-delay="100"
           >
             <div class="flex items-center justify-between mb-3 md:mb-4">
               <div>
@@ -138,6 +145,9 @@
 
           <div
             class="stats-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-2xl border border-cyan-900/30 hover:border-cyan-500/50 transition-all duration-300"
+            data-aos="fade-up"
+            data-aos-duration="600"
+            data-aos-delay="200"
           >
             <div class="flex items-center justify-between mb-3 md:mb-4">
               <div>
@@ -158,6 +168,9 @@
 
           <div
             class="stats-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-2xl border border-cyan-900/30 hover:border-cyan-500/50 transition-all duration-300"
+            data-aos="fade-up"
+            data-aos-duration="600"
+            data-aos-delay="300"
           >
             <div class="flex items-center justify-between mb-3 md:mb-4">
               <div>
@@ -182,6 +195,9 @@
 
           <div
             class="stats-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-2xl border border-cyan-900/30 hover:border-cyan-500/50 transition-all duration-300"
+            data-aos="fade-up"
+            data-aos-duration="600"
+            data-aos-delay="400"
           >
             <div class="flex items-center justify-between mb-3 md:mb-4">
               <div>
@@ -206,7 +222,7 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="mb-6 md:mb-8">
+        <div class="mb-6 md:mb-8" data-aos="fade-up" data-aos-duration="600">
           <h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-white">
             Quick Actions
           </h3>
@@ -214,6 +230,9 @@
             <a
               href="image-upload.html"
               class="quick-action-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-cyan-900/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 group"
+              data-aos="zoom-in"
+              data-aos-duration="500"
+              data-aos-delay="100"
             >
               <span
                 class="material-icons text-cyan-400 text-4xl md:text-5xl mb-3 md:mb-4 group-hover:scale-110 transition-transform"
@@ -230,6 +249,9 @@
             <a
               href="text-analysis.html"
               class="quick-action-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-cyan-900/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 group"
+              data-aos="zoom-in"
+              data-aos-duration="500"
+              data-aos-delay="200"
             >
               <span
                 class="material-icons text-cyan-400 text-4xl md:text-5xl mb-3 md:mb-4 group-hover:scale-110 transition-transform"
@@ -246,6 +268,9 @@
             <a
               href="video-upload.html"
               class="quick-action-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-cyan-900/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 group"
+              data-aos="zoom-in"
+              data-aos-duration="500"
+              data-aos-delay="300"
             >
               <span
                 class="material-icons text-cyan-400 text-4xl md:text-5xl mb-3 md:mb-4 group-hover:scale-110 transition-transform"
@@ -262,11 +287,15 @@
             <a
               href="website-analysis.html"
               class="quick-action-card bg-black/30 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-cyan-900/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all duration-300 group"
+              data-aos="zoom-in"
+              data-aos-duration="500"
+              data-aos-delay="400"
             >
               <span
                 class="material-icons text-cyan-400 text-4xl md:text-5xl mb-3 md:mb-4 group-hover:scale-110 transition-transform"
                 >link</span
               >
+
               <h4 class="text-base md:text-lg font-semibold text-white mb-2">
                 Analyze Website
               </h4>
@@ -278,5 +307,15 @@
         </div>
       </main>
     </div>
+    <!-- AOS Animation Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        once: true,
+        mirror: false,
+        anchorPlacement: "top-bottom",
+        easing: "ease-in-out",
+      });
+    </script>
   </body>
 </html>

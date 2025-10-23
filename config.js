@@ -184,9 +184,29 @@ function initializeSidebar() {
   });
 }
 
+// Initialize AOS animations
+function initializeAOS() {
+  if (typeof AOS !== "undefined") {
+    AOS.init({
+      once: true,
+      mirror: false,
+      anchorPlacement: "top-bottom",
+      easing: "ease-in-out",
+      duration: 600,
+      offset: 50,
+      delay: 0,
+    });
+  }
+}
+
 // Call this when DOM is loaded
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializeSidebar);
+  document.addEventListener("DOMContentLoaded", () => {
+    initializeSidebar();
+    // Small delay to ensure AOS library is loaded
+    setTimeout(initializeAOS, 100);
+  });
 } else {
   initializeSidebar();
+  setTimeout(initializeAOS, 100);
 }

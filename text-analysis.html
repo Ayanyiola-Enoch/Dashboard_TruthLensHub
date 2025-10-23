@@ -15,6 +15,9 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script src="config.js"></script>
+
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   </head>
   <body class="text-white">
     <div class="flex h-screen relative overflow-hidden cyber-grid">
@@ -103,7 +106,7 @@
       <!-- Main Content -->
       <main class="flex-1 p-4 md:p-8 overflow-y-auto relative z-10">
         <!-- Header -->
-        <div class="mb-6 md:mb-8">
+        <div class="mb-6 md:mb-8" data-aos="fade-down" data-aos-duration="600">
           <div class="back-to-dashboard flex items-center mb-4">
             <a
               href="index.html"
@@ -124,6 +127,8 @@
         <!-- Input Section -->
         <div
           class="bg-black/30 backdrop-blur-sm p-4 md:p-8 rounded-2xl border border-cyan-900/30 shadow-2xl mb-6 md:mb-8"
+          data-aos="fade-up"
+          data-aos-duration="700"
         >
           <div class="mb-4 md:mb-6">
             <label class="block text-sm font-semibold text-gray-300 mb-2"
@@ -177,6 +182,9 @@
         <!-- AI Detection Results -->
         <div
           class="bg-black/30 backdrop-blur-sm p-4 md:p-8 rounded-2xl border border-cyan-900/30 shadow-2xl"
+          data-aos="fade-up"
+          data-aos-duration="700"
+          data-aos-delay="200"
         >
           <h3
             class="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-white flex items-center"
@@ -203,6 +211,9 @@
         </div>
       </main>
     </div>
+
+    <!-- AOS Animation Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
       // Text Analysis
@@ -384,6 +395,14 @@
             </div>
           `;
         }
+      });
+
+      // Initialize AOS
+      AOS.init({
+        duration: 600, // Animation duration in milliseconds
+        easing: "ease-in-out", // Animation easing function
+        once: true, // Whether animation should happen only once while scrolling down
+        mirror: false, // Whether elements should animate in both directions while scrolling
       });
     </script>
   </body>
